@@ -5,7 +5,7 @@ import pdfParse from "pdf-parse"
 import readline from "readline"
 
 // Extract text from PDF
-async function extractTextFromPDF(filePath: string): Promise<string> {
+export async function extractTextFromPDF(filePath: string): Promise<string> {
 	const dataBuffer = fs.readFileSync(filePath)
 	const pdfData = await pdfParse(dataBuffer)
 	return pdfData.text
@@ -13,13 +13,13 @@ async function extractTextFromPDF(filePath: string): Promise<string> {
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
-type Messages = OpenAI.Chat.Completions.ChatCompletionMessageParam[]
+export type Messages = OpenAI.Chat.Completions.ChatCompletionMessageParam[]
 
-async function chatWithGPT(messages: Messages, question: string) {
+export async function chatWithGPT(messages: Messages, question: string) {
 	messages.push({ role: "user", content: question })
 
 	const response = await openai.chat.completions.create({
-		model: "gpt-4o",
+		model: "gpt-3.5-turbo",
 		messages: messages,
 	})
 
@@ -28,7 +28,7 @@ async function chatWithGPT(messages: Messages, question: string) {
 	messages.push({ role: "assistant", content: answer })
 }
 
-async function initializeWithPdf(
+export async function initializeWithPdf(
 	pdfPath: string,
 	messages: Messages
 ): Promise<void> {
@@ -61,7 +61,6 @@ async function main() {
 	const messages: Messages = []
 	await initializeWithPdf(pdfPath, messages)
 	await chatWithGPT(messages, initialPrompt)
-
 	printConvo(messages.slice(2))
 
 	if (!interactive) {
@@ -88,10 +87,12 @@ async function main() {
 	})
 }
 
-function printConvo(messages: Messages) {
+export function printConvo(messages: Messages) {
 	for (const message of messages) {
 		console.log(message.role + "> " + message.content + "\n\n")
 	}
 }
 
-main()
+if (require.main === module) {
+	main()
+}
