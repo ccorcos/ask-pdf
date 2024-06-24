@@ -1,12 +1,9 @@
-# TypeScript Library Boilerplate
+# Ask PDF
 
-## Getting Started
+A simple tool for asking ChatGPT about a pdf document.
 
 ```sh
-git clone git@github.com:ccorcos/typescript-library.git library
-cd library
-git remote remove origin
-
-npm install
-npm run release
+./node_modules/.bin/tsx src/ask.ts path/to/file.pdf "Whatever prompt / question you have" [-i]
 ```
+
+Optional `-i` paramter if you want to interactively ask more questions.

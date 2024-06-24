@@ -22,5 +22,10 @@
 		"mocha": "^10.2.0",
 		"tsx": "^4.1.2",
 		"typescript": "^5.2.2"
+	},
+	"dependencies": {
+		"dotenv": "^16.4.5",
+		"openai": "^4.52.0",
+		"pdf-parse": "^1.1.1"
 	}
 }
