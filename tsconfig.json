@@ -1,0 +1,23 @@
+{
+	"compileOnSave": false,
+	"compilerOptions": {
+		"target": "ES2018",
+		"module": "CommonJS",
+		"moduleResolution": "Node",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"noImplicitThis": true,
+		"noImplicitAny": false,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"removeComments": false,
+		"sourceMap": true,
+		"lib": ["ES2018", "DOM"],
+		"outDir": "build",
+		"declaration": true
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "**/*.test.ts"]
+}
