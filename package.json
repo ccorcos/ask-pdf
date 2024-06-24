@@ -26,6 +26,7 @@
 	"dependencies": {
 		"dotenv": "^16.4.5",
 		"openai": "^4.52.0",
-		"pdf-parse": "^1.1.1"
+		"pdf-parse": "^1.1.1",
+		"tiktoken": "^1.0.15"
 	}
 }

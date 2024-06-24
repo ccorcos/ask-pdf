@@ -3,6 +3,10 @@ import fs from "fs"
 import { OpenAI } from "openai"
 import pdfParse from "pdf-parse"
 import readline from "readline"
+import { encoding_for_model } from "tiktoken"
+import { retry } from "./retry"
+
+const model: OpenAI.Chat.ChatModel = "gpt-3.5-turbo"
 
 // Extract text from PDF
 export async function extractTextFromPDF(filePath: string): Promise<string> {
@@ -19,7 +23,7 @@ export async function chatWithGPT(messages: Messages, question: string) {
 	messages.push({ role: "user", content: question })
 
 	const response = await openai.chat.completions.create({
-		model: "gpt-3.5-turbo",
+		model: model,
 		messages: messages,
 	})
 
@@ -30,14 +34,71 @@ export async function chatWithGPT(messages: Messages, question: string) {
 
 export async function initializeWithPdf(
 	pdfPath: string,
-	messages: Messages
+	messages: Messages,
+	truncate = 10_000_000
 ): Promise<void> {
 	// Extract text from PDF
 	const pdfText = await extractTextFromPDF(pdfPath)
-	messages.push({
-		role: "system",
-		content: `Based on the following document:\n\n${pdfText}`,
-	})
+
+	WHOLE_THING: {
+		// console.log("size:", pdfText.length)
+		// messages.push({
+		// 	role: "system",
+		// 	content: `Based on the following document:\n\n${pdfText}`,
+		// })
+	}
+
+	CHUNK: {
+		// Split PDF text into manageable chunks
+		// const chunks = splitTextIntoChunks(pdfText, 2_000) // Adjust chunk size if necessary
+		// // Process each chunk separately
+		// for (const chunk of chunks) {
+		// 	// Add the document chunk to the conversation
+		// 	messages.push({
+		// 		role: "system",
+		// 		content: `Based on the following document chunk:\n\n${chunk}`,
+		// 	})
+		// }
+	}
+
+	TRUNCATE: {
+		// const max = 45_000
+		// if (pdfText.length > max) {
+		// 	console.log(
+		// 		"WARNING: truncated to",
+		// 		Math.round((max / pdfText.length) * 100) + "%"
+		// 	)
+		// }
+		// messages.push({
+		// 	role: "system",
+		// 	content: `Based on the following document:\n\n${pdfText.slice(0, max)}`,
+		// })
+	}
+
+	TOKEN: {
+		const enc = encoding_for_model(model)
+		const tokens = enc.encode(pdfText)
+
+		if (tokens.length <= truncate) {
+			messages.push({
+				role: "system",
+				content: `Based on the following document:\n\n${pdfText}`,
+			})
+			return
+		}
+
+		const truncatedText = enc.decode(tokens.slice(0, truncate))
+
+		console.log(
+			"WARNING: truncated to",
+			Math.round((truncatedText.length / pdfText.length) * 100) + "%"
+		)
+
+		messages.push({
+			role: "system",
+			content: `Based on the following document:\n\n${truncatedText}`,
+		})
+	}
 }
 
 async function main() {
@@ -59,8 +120,14 @@ async function main() {
 
 	// Initialize conversation messages
 	const messages: Messages = []
-	await initializeWithPdf(pdfPath, messages)
-	await chatWithGPT(messages, initialPrompt)
+	await retry(
+		async (trunc) => {
+			messages.splice(0, messages.length)
+			await initializeWithPdf(pdfPath, messages, trunc)
+			await chatWithGPT(messages, initialPrompt)
+		},
+		[50_000, 25_000, 10_000, 2_000, 1_000]
+	)
 	printConvo(messages.slice(2))
 
 	if (!interactive) {

@@ -1,6 +1,7 @@
 import { readdirSync } from "fs"
 import * as path from "path"
 import { Messages, chatWithGPT, initializeWithPdf } from "./ask"
+import { retry, sleep } from "./retry"
 
 async function main() {
 	// Command-line interface setup
@@ -20,11 +21,17 @@ async function main() {
 	const files = readdirSync(dirPath)
 
 	for (const fileName of files) {
+		if (fileName.startsWith(".")) continue
 		// Initialize conversation messages
 		const messages: Messages = []
 		const pdfPath = path.join(dirPath, fileName)
-		await initializeWithPdf(pdfPath, messages)
-		await retry(() => chatWithGPT(messages, initialPrompt))
+		await retry(
+			async (trunc) => {
+				await initializeWithPdf(pdfPath, messages, trunc)
+				await chatWithGPT(messages, initialPrompt)
+			},
+			[50_000, 25_000, 10_000, 2_000, 1_000]
+		)
 		console.log("Regarding:", fileName)
 		printConvo(messages.slice(2))
 		await sleep(500)
@@ -39,28 +46,4 @@ export function printConvo(messages: Messages) {
 
 if (require.main === module) {
 	main()
-}
-
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const retry = async (fn: () => Promise<any>, tries = 5) => {
-	try {
-		await fn()
-	} catch (error) {
-		if (tries <= 0) throw error
-
-		if (error.status === 429) {
-			console.log("RATE LIMIT")
-			// await sleep(15_000)
-			// return retry(fn, tries - 1)
-			return
-		}
-
-		if (error.status === 400) {
-			console.log("REQUEST TOO LARGE")
-			return
-		}
-
-		throw error
-	}
 }
