@@ -24,9 +24,12 @@
 		"typescript": "^5.2.2"
 	},
 	"dependencies": {
+		"canvas": "^2.11.2",
 		"dotenv": "^16.4.5",
 		"openai": "^4.52.0",
 		"pdf-parse": "^1.1.1",
+		"pdfjs-dist": "^4.5.136",
+		"tesseract.js": "^5.1.1",
 		"tiktoken": "^1.0.15"
 	}
 }
