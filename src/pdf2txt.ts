@@ -4,6 +4,10 @@
 
 */
 
+// Hide pdfjs-dist warnings
+const log = console.log
+console.log = () => {}
+
 import pdfType, { PDFPageProxy } from "pdfjs-dist"
 const pdfjsLib = require("pdfjs-dist") as typeof pdfType
 
@@ -145,8 +149,7 @@ if (require.main === module) {
 
 	pdf2txt(pdfPath).then((plaintext) => {
 		if (plaintext) {
-			console.log(plaintext)
-			process.exit(0)
+			log(plaintext)
 		} else {
 			console.error("Failed to convert PDF to plaintext")
 			process.exit(1)
