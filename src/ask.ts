@@ -1,19 +1,10 @@
 import "dotenv/config"
-import fs from "fs"
 import { OpenAI } from "openai"
-import pdfParse from "pdf-parse"
 import readline from "readline"
-import { encoding_for_model } from "tiktoken"
+import { pdf2txt } from "./pdf2txt"
 import { retry } from "./retry"
 
 const model: OpenAI.Chat.ChatModel = "gpt-3.5-turbo"
-
-// Extract text from PDF
-export async function extractTextFromPDF(filePath: string): Promise<string> {
-	const dataBuffer = fs.readFileSync(filePath)
-	const pdfData = await pdfParse(dataBuffer)
-	return pdfData.text
-}
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -38,14 +29,14 @@ export async function initializeWithPdf(
 	truncate = 10_000_000
 ): Promise<void> {
 	// Extract text from PDF
-	const pdfText = await extractTextFromPDF(pdfPath)
+	const pdfText = await pdf2txt(pdfPath)
 
 	WHOLE_THING: {
-		// console.log("size:", pdfText.length)
-		// messages.push({
-		// 	role: "system",
-		// 	content: `Based on the following document:\n\n${pdfText}`,
-		// })
+		console.log("size:", pdfText.length)
+		messages.push({
+			role: "system",
+			content: `Based on the following document:\n\n${pdfText}`,
+		})
 	}
 
 	CHUNK: {
@@ -76,28 +67,24 @@ export async function initializeWithPdf(
 	}
 
 	TOKEN: {
-		const enc = encoding_for_model(model)
-		const tokens = enc.encode(pdfText)
-
-		if (tokens.length <= truncate) {
-			messages.push({
-				role: "system",
-				content: `Based on the following document:\n\n${pdfText}`,
-			})
-			return
-		}
-
-		const truncatedText = enc.decode(tokens.slice(0, truncate))
-
-		console.log(
-			"WARNING: truncated to",
-			Math.round((truncatedText.length / pdfText.length) * 100) + "%"
-		)
-
-		messages.push({
-			role: "system",
-			content: `Based on the following document:\n\n${truncatedText}`,
-		})
+		// const enc = encoding_for_model(model)
+		// const tokens = enc.encode(pdfText)
+		// if (tokens.length <= truncate) {
+		// 	messages.push({
+		// 		role: "system",
+		// 		content: `Based on the following document:\n\n${pdfText}`,
+		// 	})
+		// 	return
+		// }
+		// const truncatedText = enc.decode(tokens.slice(0, truncate))
+		// console.log(
+		// 	"WARNING: truncated to",
+		// 	Math.round((truncatedText.length / pdfText.length) * 100) + "%"
+		// )
+		// messages.push({
+		// 	role: "system",
+		// 	content: `Based on the following document:\n\n${truncatedText}`,
+		// })
 	}
 }
 

@@ -12,38 +12,33 @@ const pdfjsLib = require("pdfjs-dist") as typeof pdfType
 const CHAR_WIDTH_PX = 4
 const PAGE_WIDTH_CHARS = 300
 
+const PAGE_LABELS = true
+
 async function convertPdfToPlaintext(pdfUrl) {
-	try {
-		const pdf = await pdfjsLib.getDocument(pdfUrl).promise
+	const pdf = await pdfjsLib.getDocument(pdfUrl).promise
 
-		const pages: string[] = []
+	const pages: string[] = []
 
-		for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-			const page = await pdf.getPage(pageNum)
-			const pageText = await processPage(page)
-			pages.push(pageText)
-		}
-
-		return pages
-			.map((page, i) => {
-				const spaces = getMinLeadingSpaces(page)
-				const lines = page
-					.split("\n")
-					.map((line) => line.slice(spaces).trimEnd())
-				const maxLen = Math.max(...lines.map((line) => line.length))
-				return (
-					`PAGE ${i + 1} `.padEnd(maxLen, "-") +
-					"\n\n" +
-					lines.join("\n") +
-					"\n"
-				)
-			})
-			.join("\n")
-			.trim()
-	} catch (error) {
-		console.error("Error converting PDF to plaintext:", error)
-		return null
+	for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+		const page = await pdf.getPage(pageNum)
+		const pageText = await processPage(page)
+		pages.push(pageText)
 	}
+
+	return pages
+		.map((page, i) => {
+			const spaces = getMinLeadingSpaces(page)
+			const lines = page.split("\n").map((line) => line.slice(spaces).trimEnd())
+			const maxLen = Math.max(...lines.map((line) => line.length))
+			return (
+				(PAGE_LABELS ? `PAGE ${i + 1} `.padEnd(maxLen, "-") + "\n" : "") +
+				"\n" +
+				lines.join("\n") +
+				"\n"
+			)
+		})
+		.join("\n")
+		.trim()
 }
 
 function getMinLeadingSpaces(text: string) {
@@ -63,7 +58,7 @@ function getMinLeadingSpaces(text: string) {
 }
 
 async function processPage(page: PDFPageProxy) {
-	const textContent = await page.getTextContent()
+	const textContent = await page.getTextContent({ disableNormalization: true })
 	const pageText = textContent.items.map((item) => {
 		if (!("transform" in item)) {
 			console.error("item missing transform", item)
@@ -73,6 +68,7 @@ async function processPage(page: PDFPageProxy) {
 				y: 0, // We'll sort these to the top
 			}
 		}
+
 		return {
 			text: item.str,
 			x: Math.floor(item.transform[4] / CHAR_WIDTH_PX),
