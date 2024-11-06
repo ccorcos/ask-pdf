@@ -4,10 +4,6 @@
 
 */
 
-// Hide pdfjs-dist warnings
-const log = console.log
-console.log = () => {}
-
 import pdfType, { PDFPageProxy } from "pdfjs-dist"
 const pdfjsLib = require("pdfjs-dist") as typeof pdfType
 
@@ -19,6 +15,10 @@ const PAGE_WIDTH_CHARS = 300
 const PAGE_LABELS = true
 
 async function convertPdfToPlaintext(pdfUrl) {
+	// Hide pdfjs-dist warnings
+	const log = console.log
+	console.log = () => {}
+
 	const pdf = await pdfjsLib.getDocument(pdfUrl).promise
 
 	const pages: string[] = []
@@ -29,13 +29,16 @@ async function convertPdfToPlaintext(pdfUrl) {
 		pages.push(pageText)
 	}
 
+	console.log = log
+
 	return pages
 		.map((page, i) => {
 			const spaces = getMinLeadingSpaces(page)
 			const lines = page.split("\n").map((line) => line.slice(spaces).trimEnd())
 			const maxLen = Math.max(...lines.map((line) => line.length))
 			return (
-				(PAGE_LABELS ? `PAGE ${i + 1} `.padEnd(maxLen, "-") + "\n" : "") +
+				// (PAGE_LABELS ? `PAGE ${i + 1} `.padEnd(maxLen, "-") + "\n" : "") +
+				(PAGE_LABELS ? `--- PAGE ${i + 1} ---` + "\n" : "") +
 				"\n" +
 				lines.join("\n") +
 				"\n"
@@ -149,7 +152,7 @@ if (require.main === module) {
 
 	pdf2txt(pdfPath).then((plaintext) => {
 		if (plaintext) {
-			log(plaintext)
+			console.log(plaintext)
 		} else {
 			console.error("Failed to convert PDF to plaintext")
 			process.exit(1)

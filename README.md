@@ -38,3 +38,9 @@ But it doesn't handle images inside pdfs very well.
 `pdfocr` is an experiment with using ocr on the entire pdf.
 
 None of this is perfect.
+
+[Zerox looks promising](https://github.com/getomni-ai/zerox).
+
+```sh
+brew install graphicsmagick
+```
