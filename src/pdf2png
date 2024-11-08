@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Converts a PDF file to PNG images using Ghostscript
+# Each page of the PDF is converted to a separate PNG file
+# The PNGs are numbered sequentially starting from 0001.png
+#
+# Usage: ./src/pdf2png <pdf_file> <output_dir>
+# Example: ./src/pdf2png input.pdf output/
+#
+# Requires Ghostscript to be installed:
+#   macOS: brew install ghostscript
+#   Ubuntu/Debian: sudo apt-get install ghostscript
+#   Windows: https://ghostscript.com/releases/gsdnld.html
+
+
 # Check if required arguments are provided
 if [ $# -lt 2 ]; then
     echo "Usage: $0 <pdf_file> <output_dir>"

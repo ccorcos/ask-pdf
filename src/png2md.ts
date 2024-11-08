@@ -1,3 +1,11 @@
+/*
+
+Uses OpenAI's OCR to convert an image to markdown, similar to zerox.
+
+tsx src/png2md.ts path/to/image.png > path/to/output.md
+
+*/
+
 import "dotenv/config"
 import * as fs from "fs/promises"
 import { OpenAI } from "openai"
@@ -29,7 +37,7 @@ async function retry<T>(fn: () => Promise<T>, tries = 0) {
 export const sleep = (ms: number) =>
 	new Promise((resolve) => setTimeout(resolve, ms))
 
-export async function openaiocr(imageBuffer: Buffer) {
+export async function png2md(imageBuffer: Buffer) {
 	// Default system message.
 	const messages: Messages = [
 		{
@@ -80,7 +88,7 @@ if (require.main === module) {
 	}
 
 	fs.readFile(imagePath)
-		.then((imageBuffer) => openaiocr(imageBuffer))
+		.then((imageBuffer) => png2md(imageBuffer))
 		.then((result) => {
 			console.log(result)
 			process.exit(0)

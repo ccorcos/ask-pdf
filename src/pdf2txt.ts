@@ -1,5 +1,7 @@
 /*
 
+Simple PDF text extractor.
+
 ./node_modules/.bin/tsx src/pdf2txt.ts path/to/pdf
 
 */

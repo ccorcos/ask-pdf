@@ -48,5 +48,5 @@ TODO
 src/pdf2png examples/FORPD.pdf examples/FORPD
 
 mkdir -p examples/FORPD-md
-npx tsx src/openaiocr.ts examples/FORPD/0001.png > examples/FORPD-md/0001.md
+npx tsx src/png2md.ts examples/FORPD/0001.png > examples/FORPD-md/0001.md
 ```

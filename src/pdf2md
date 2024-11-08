@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Converts a PDF file to markdown using OpenAI's OCR
+# First converts PDF to PNGs, then processes each PNG with OCR to generate markdown
+#
+# Usage: ./src/pdf2md <pdf_input_path> <md_output_path>
+# Example: ./src/pdf2md input.pdf output.md
+
 # Set up trap to handle SIGINT (Ctrl+C)
 trap 'echo -e "\nInterrupted by user."; exit 1' INT
 
@@ -47,7 +53,7 @@ for png in "$work_dir/png"/*.png; do
     mkdir -p "$work_dir/md"
 
     start_time=$(date +%s)
-    ./node_modules/.bin/tsx src/openaiocr.ts "$png" > "$md_file"
+    ./node_modules/.bin/tsx src/png2md.ts "$png" > "$md_file"
     end_time=$(date +%s)
 
     page_time=$((end_time - start_time))
