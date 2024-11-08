@@ -89,7 +89,15 @@ time ./src/pdf2md examples/FORPD.pdf examples/FORPD.md
 time ./src/pdf2md examples/SJUSD.pdf examples/SJUSD.md
 ```
 
+Next...
+
 ```sh
 time npx tsx askrecur.ts src/prompts.md examples/FORPD.md > examples/FORPD-summary.md
 time npx tsx askrecur.ts src/prompts.md examples/SJUSD.md > examples/SJUSD-summary.md
 ```
+
+Next...
+
+- Spend time to download all of the different files into a directory.
+- Process into summaries
+- RAG for people to ask questions
