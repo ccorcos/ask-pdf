@@ -1,6 +1,7 @@
 import "dotenv/config"
 import fs from "fs/promises"
 import { OpenAI } from "openai"
+import { retry } from "./retry"
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -33,16 +34,19 @@ export async function askrecur(
 				content: fileContents,
 			})
 		} else {
+			console.error("USER> ", prompt, "\n\n")
 			messages.push({
 				role: "user",
 				content: prompt,
 			})
 		}
 
-		const response = await openai.chat.completions.create({
-			model: "gpt-4o-mini",
-			messages: messages,
-		})
+		const response = await retry(async () =>
+			openai.chat.completions.create({
+				model: "gpt-4o-mini",
+				messages: messages,
+			})
+		)
 
 		const result = response.choices[0].message.content!
 		messages.push({

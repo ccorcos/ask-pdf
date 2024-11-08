@@ -9,33 +9,12 @@ tsx src/png2md.ts path/to/image.png > path/to/output.md
 import "dotenv/config"
 import * as fs from "fs/promises"
 import { OpenAI } from "openai"
+import { retry } from "./retry"
 
 const model: OpenAI.Chat.ChatModel = "gpt-4o-mini"
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 export type Messages = OpenAI.Chat.Completions.ChatCompletionMessageParam[]
-
-async function retry<T>(fn: () => Promise<T>, tries = 0) {
-	try {
-		// console.error("running")
-		return await fn()
-	} catch (error) {
-		if (tries >= 10) throw error
-
-		if (error.status === 429) {
-			const ms = 10 + 2 ** tries * 10
-			console.error(error)
-			console.error(`RATE LIMIT, sleeping for ${ms}ms`)
-			await sleep(ms)
-			return retry(fn, tries + 1)
-		}
-
-		throw error
-	}
-}
-
-export const sleep = (ms: number) =>
-	new Promise((resolve) => setTimeout(resolve, ms))
 
 export async function png2md(imageBuffer: Buffer) {
 	// Default system message.
@@ -70,7 +49,6 @@ You must include all information on the page.
 			presence_penalty: 0,
 			temperature: 0,
 			top_p: 1,
-			// max_tokens: 2000,
 		})
 	)
 

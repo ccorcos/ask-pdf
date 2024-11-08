@@ -107,14 +107,11 @@ async function main() {
 
 	// Initialize conversation messages
 	const messages: Messages = []
-	await retry(
-		async (trunc) => {
-			messages.splice(0, messages.length)
-			await initializeWithPdf(pdfPath, messages, trunc)
-			await chatWithGPT(messages, initialPrompt)
-		},
-		[50_000, 25_000, 10_000, 2_000, 1_000]
-	)
+	await retry(async () => {
+		messages.splice(0, messages.length)
+		await initializeWithPdf(pdfPath, messages, 50_000)
+		await chatWithGPT(messages, initialPrompt)
+	})
 	printConvo(messages.slice(2))
 
 	if (!interactive) {

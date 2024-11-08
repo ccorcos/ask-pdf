@@ -71,8 +71,9 @@ Revised Summary:
 Revise the summary with the following goals in mind:
 - Improve the overall quality of the writing.
 - Don't mention any procedural items without including some details about them. For example, don't mention "There was public comment" without including what people said.
-- The entire format should be "**title sentence**: details".
+- The entire format should be "**title sentence**: details". Get rid of all subheadings (`##`, `###`, etc.).
 
 ---
 
 Revise the summary to include more details that the community would want to know.
+For each section, make it more concise without removing detail or proper nouns.

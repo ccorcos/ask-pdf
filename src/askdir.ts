@@ -25,13 +25,10 @@ async function main() {
 		// Initialize conversation messages
 		const messages: Messages = []
 		const pdfPath = path.join(dirPath, fileName)
-		await retry(
-			async (trunc) => {
-				await initializeWithPdf(pdfPath, messages, trunc)
-				await chatWithGPT(messages, initialPrompt)
-			},
-			[50_000, 25_000, 10_000, 2_000, 1_000]
-		)
+		await retry(async () => {
+			await initializeWithPdf(pdfPath, messages, 50_000)
+			await chatWithGPT(messages, initialPrompt)
+		})
 		console.log("Regarding:", fileName)
 		printConvo(messages.slice(2))
 		await sleep(500)
