@@ -1,3 +1,35 @@
+# Data Extraction
+
+PDF data extraction is painful.
+
+Currently what claude-sonnet uses is pdfminer
+
+```sh
+pip install pdfminer.six
+pdf2txt.py /Users/chet/Downloads/FORPD/20230816Plus.pdf
+```
+
+My version preserves layout a lot better
+
+```sh
+./node_modules/.bin/tsx src/pdf2txt.ts /Users/chet/Downloads/FORPD/20230816Plus.pdf
+```
+
+But it doesn't handle images inside pdfs very well.
+
+`pdf2imgs` is an experiment with extracting images for ocr.
+`pdfocr` is an experiment with using ocr on the entire pdf.
+
+None of this is perfect.
+
+[Zerox looks promising](https://github.com/getomni-ai/zerox).
+
+```sh
+brew install graphicsmagick
+```
+
+
+
 Game plan...
 
 - Get some example PDFs
@@ -49,4 +81,15 @@ src/pdf2png examples/FORPD.pdf examples/FORPD
 
 mkdir -p examples/FORPD-md
 npx tsx src/png2md.ts examples/FORPD/0001.png > examples/FORPD-md/0001.md
+```
+
+
+```sh
+time ./src/pdf2md examples/FORPD.pdf examples/FORPD.md
+time ./src/pdf2md examples/SJUSD.pdf examples/SJUSD.md
+```
+
+```sh
+time npx tsx askrecur.ts src/prompts.md examples/FORPD.md > examples/FORPD-summary.md
+time npx tsx askrecur.ts src/prompts.md examples/SJUSD.md > examples/SJUSD-summary.md
 ```
