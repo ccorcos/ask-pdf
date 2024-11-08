@@ -11,3 +11,4 @@ examples/**/*.md
 *.traineddata
 
 *.done
+data/
