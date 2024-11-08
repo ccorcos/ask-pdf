@@ -4,3 +4,10 @@ node_modules
 build
 .env
 out
+
+examples/**/*.md
+
+**/*.png
+*.traineddata
+
+*.done

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Check if required arguments are provided
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <pdf_file> <output_dir>"
+    exit 1
+fi
+
+# Get filename without extension
+filename=$(basename "$1" .pdf)
+
+# Create output directory if it doesn't exist
+mkdir -p "$2"
+
+# Log output location
+echo "Converting PDF to PNG files in: $2"
+
+# Convert PDF to PNG
+gs \
+  -dNOPAUSE \
+  -dBATCH \
+  -r400 \
+  -sDEVICE=png16m \
+  -dBackgroundColor=16\#FFFFFF \
+  -sOutputFile="$2/%04d.png" \
+  "$1"
+
+# -dFirstPage=1 -dLastPage=2 \

@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# Set up trap to handle SIGINT (Ctrl+C)
+trap 'echo -e "\nInterrupted by user."; exit 1' INT
+
+# Check if required arguments are provided
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <pdf_input_path> <md_output_path>"
+    exit 1
+fi
+
+# Create work directory based on input filename
+work_dir="$(dirname "$2")/$(basename "$1" .pdf)-work"
+mkdir -p "$work_dir"
+
+echo "Working in $work_dir"
+
+# Convert PDF to PNGs if not already done
+if [ ! -f "$work_dir/pdf2png.done" ]; then
+    echo "Converting PDF to PNGs..."
+    ./src/pdf2png "$1" "$work_dir/png" && touch "$work_dir/pdf2png.done"
+    echo "PDF conversion complete"
+else
+    echo "Using existing PNG files..."
+fi
+
+# Process each PNG with zerox OCR, skipping completed ones
+echo "Processing pages with OCR..."
+# Count total pages and initialize timing variables
+total_pages=$(ls "$work_dir/png"/*.png | wc -l)
+completed_pages=0
+total_time=0
+remaining_pages=$total_pages
+
+for png in "$work_dir/png"/*.png; do
+    page_num=$(basename "$png" .png)
+    md_file="$work_dir/md/$page_num.md"
+
+    # Skip if markdown file already exists and is not empty
+    if [ -s "$md_file" ]; then
+        echo "Skipping completed page $page_num..."
+        ((remaining_pages--))
+        continue
+    fi
+
+    echo "Processing page $page_num..."
+    mkdir -p "$work_dir/md"
+
+    start_time=$(date +%s)
+    ./node_modules/.bin/tsx src/openaiocr.ts "$png" > "$md_file"
+    end_time=$(date +%s)
+
+    page_time=$((end_time - start_time))
+    total_time=$((total_time + page_time))
+    ((completed_pages++))
+    ((remaining_pages--))
+
+    # Calculate and display estimates
+    avg_time_per_page=$((total_time / completed_pages))
+    remaining_time=$((avg_time_per_page * remaining_pages))
+    remaining_minutes=$((remaining_time / 60))
+
+    echo "Page $page_num took ${page_time}s. $remaining_pages pages remaining."
+    echo "Estimated remaining time: ${remaining_time}s ($remaining_minutes minutes)"
+done
+echo "OCR processing complete for $total_pages pages"
+
+# Merge all markdown files in order
+echo "Merging markdown files..."
+for md in "$work_dir/md"/*.md; do
+    page_num=$(basename "$md" .md)
+    # Remove leading zeros and add HTML comment
+    page_num_clean=$((10#$page_num))
+    echo "<!-- Page $page_num_clean -->" > "$md.tmp"
+    cat "$md" >> "$md.tmp"
+    mv "$md.tmp" "$md"
+done
+cat "$work_dir/md"/*.md > "$2"
+echo "All done! Output written to $2"
+
+# rm -rf "$work_dir"

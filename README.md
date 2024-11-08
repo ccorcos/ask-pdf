@@ -44,3 +44,6 @@ None of this is perfect.
 ```sh
 brew install graphicsmagick
 ```
+
+
+
