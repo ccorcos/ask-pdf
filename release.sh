@@ -9,8 +9,7 @@ npm run build
 
 cp README.md build
 cp package.json build
-cp src/pdf2md build
-cp src/pdf2png build
+cp src/* build
 
 cd build
 npm publish --access public
