@@ -1,6 +1,6 @@
 {
 	"name": "@ccorcos/ask-pdf",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "Ask a pdf with AI",
 	"repository": {
 		"url": "git+https://github.com/ccorcos/ask-pdf.git"
