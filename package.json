@@ -3,7 +3,7 @@
 	"version": "0.0.5",
 	"description": "Ask a pdf with AI",
 	"repository": {
-		"url": "https://github.com/ccorcos/ask-pdf"
+		"url": "git+https://github.com/ccorcos/ask-pdf.git"
 	},
 	"main": "index.js",
 	"scripts": {
@@ -17,7 +17,7 @@
 	"author": "Chet Corcos <ccorcos@gmail.com>",
 	"license": "MIT",
 	"devDependencies": {
-		"@types/mocha": "whitecolor/mocha-types",
+		"@types/mocha": "github:whitecolor/mocha-types",
 		"@types/node": "^20.9.1",
 		"mocha": "^10.2.0",
 		"tsx": "^4.1.2",
