@@ -1,0 +1,15 @@
+# Summary of Fair Oaks Recreation and Park District Board Meeting (August 16, 2023)
+
+**Approval of FY 2023-2024 Final Budgets**: The board approved the final budgets for the upcoming fiscal year, totaling **$3,312,068** for the General Fund. Salaries and benefits increased by **$23,000** due to a **5% Cost-of-Living Adjustment (COLA)**. The Parks Maintenance and Recreation Improvement District budget is **$603,650**, while the Phoenix Field Lighting and Landscape Assessment District totals **$56,499** for management and lighting. The Gum Ranch Landscape and Lighting Assessment District budget stands at **$83,080** for landscape maintenance.
+
+**Contract with Fair Oaks Theatre Festival**: A one-year contract with the Fair Oaks Theatre Festival (FOTF) was approved for using the Veterans Memorial Amphitheater. FOTF will stage a **family-friendly musical** from **July 12 to August 4, 2024**, with **12 performances** planned. Rehearsals will occur from **June 17 to July 12, 2024**. FOTF retains **100%** of ticket sales up to **$20,000**; any excess will be split **75%** for FOTF and **25%** for the district. FOTF will also share **5%** of net concession sales.
+
+**Resolution on Employer Contribution under Public Employees' Medical and Hospital Care Act**: The board adopted **Resolution 081623-05**, fixing employer contribution rates for health benefits. Rates are **$1,083.98/month** for single enrollment, **$2,167.96/month** for 2-party enrollment, and **$2,818.35/month** for family enrollment, supporting employee welfare.
+
+**Reappointment of Bond Oversight Committee Members**: The board reappointed members to the Bond Oversight Committee overseeing expenditures from the **Measure J** bond initiative, totaling **$26.9 million** for capital projects. Keith Walters will serve from **March 1, 2023, to February 29, 2024**, while Amy Larsen, Barbara Sesito, Dana Woodworker-Negri, Gary Juels, Justin Drake, and Kim Sarkovich will serve from **April 1, 2023, to March 31, 2024**.
+
+**Selection of Special District Candidate**: The board submitted votes for candidates for the Special District Commissioner position on the Sacramento Local Agency Formation Commission (Sac LAFCo). Nominees included Lindsey Carter (Herald Fire Protection District), Brian Danzl (Cordova Recreation and Park District), Paul Lindsay (Florin Resource Conservation District), Joanna McVay (North Highlands Recreation and Park District), Edwin Perez (Reclamation District 1000), Michael Seaman (Fulton-El Camino Recreation and Park District), and Robert "Bob" Wichert (Sacramento Suburban Water District).
+
+**Financial Summary**: The budget allocations reflect a strategic commitment to sustaining district operations and enhancing community services. The board's balanced budget focuses on competitive employee compensation and community engagement through events.
+
+For further information on budgets and operations, visit the [Fair Oaks Recreation and Park District website](https://www.fairoaksrecreation.com). This summary aims to keep the Fair Oaks community informed about vital board decisions affecting local recreational services and facilities.

@@ -68,12 +68,22 @@ Revised Summary:
 
 ---
 
-Revise the summary with the following goals in mind:
-- Improve the overall quality of the writing.
-- Don't mention any procedural items without including some details about them. For example, don't mention "There was public comment" without including what people said.
-- The entire format should be "**title sentence**: details". Get rid of all subheadings (`##`, `###`, etc.).
+Revise and expand each section to include more details that the community would want to know. Be precise and quantitative.
 
 ---
 
-Revise the summary to include more details that the community would want to know.
-For each section, make it more concise without removing detail or proper nouns.
+Don't mention any procedural items without including some details about them.
+
+For examples:
+- if there was public comment, include examples of what people said.
+- if there was no public comment, then omit that section entirely.
+- if the board approved the previous meeting notes, omit that from the summary because this is an uneventful detail.
+- don't include operational details like the time of the board meeting, how to join on a zoom call, or when the next meeting will be. Focus on the contents of the meeting and accompanying documents.
+
+---
+
+Get rid of all subheadings (`##`, `###`, etc.). Instead each section should begin with a bold title followed by details, e.g. "**title sentence**: details".
+
+---
+
+Make each section more concise without removing detail or proper nouns.
