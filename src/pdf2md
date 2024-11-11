@@ -59,7 +59,8 @@ for png in "$work_dir/png"/*.png; do
     mkdir -p "$work_dir/md"
 
     start_time=$(date +%s)
-    npx tsx "$SCRIPT_DIR/png2md.ts" "$png" > "$md_file"
+    page_content=$(npx tsx "$SCRIPT_DIR/png2md.ts" "$png")
+    echo "$page_content" > "$md_file"
     end_time=$(date +%s)
 
     page_time=$((end_time - start_time))
