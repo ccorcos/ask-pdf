@@ -3,20 +3,24 @@
 # Converts a PDF file to markdown using OpenAI's OCR
 # First converts PDF to PNGs, then processes each PNG with OCR to generate markdown
 #
-# Usage: ./src/pdf2md <pdf_input_path> <md_output_path>
-# Example: ./src/pdf2md input.pdf output.md
+# Usage: ./src/pdf2md <pdf_input_path> <md_output_path> [work_dir]
+# Example: ./src/pdf2md input.pdf output.md /path/to/work
 
 # Set up trap to handle SIGINT (Ctrl+C)
 trap 'echo -e "\nInterrupted by user."; exit 1' INT
 
 # Check if required arguments are provided
 if [ $# -lt 2 ]; then
-    echo "Usage: $0 <pdf_input_path> <md_output_path>"
+    echo "Usage: $0 <pdf_input_path> <md_output_path> [work_dir]"
     exit 1
 fi
 
 # Create work directory based on input filename
-work_dir="$(dirname "$2")/$(basename "$1" .pdf)-work"
+if [ -n "$3" ]; then
+    work_dir="$3"
+else
+    work_dir="/tmp/$(basename "$1" .pdf)"
+fi
 mkdir -p "$work_dir"
 
 echo "Working in $work_dir"
