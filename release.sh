@@ -13,4 +13,4 @@ cp src/pdf2md build
 cp src/pdf2png build
 
 cd build
-npm publish
+npm publish --access public
