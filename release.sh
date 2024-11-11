@@ -2,7 +2,7 @@
 
 set -e
 
-npm version patch
+# npm version patch
 
 npm run clean
 npm run build
