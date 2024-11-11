@@ -17,7 +17,7 @@ fi
 
 # Create work directory based on input filename
 if [ -n "$3" ]; then
-    work_dir="$3"
+    work_dir="$3/$(basename "$1" .pdf)"
 else
     work_dir="/tmp/$(basename "$1" .pdf)"
 fi
