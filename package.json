@@ -1,9 +1,9 @@
 {
-	"name": "typescript-library",
+	"name": "@ccorcos/ask-pdf",
 	"version": "0.0.2",
-	"description": "boilerplate for typescript libraries",
+	"description": "Ask a pdf with AI",
 	"repository": {
-		"url": "https://github.com/ccorcos/typescript-library"
+		"url": "https://github.com/ccorcos/ask-pdf"
 	},
 	"main": "index.js",
 	"scripts": {
