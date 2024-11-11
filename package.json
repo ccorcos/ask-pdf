@@ -6,6 +6,7 @@
 		"url": "https://github.com/ccorcos/ask-pdf"
 	},
 	"main": "index.js",
+	"private": "false",
 	"scripts": {
 		"clean": "rm -rf build",
 		"build": "tsc",
