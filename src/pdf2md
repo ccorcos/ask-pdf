@@ -25,10 +25,12 @@ mkdir -p "$work_dir"
 
 echo "Working in $work_dir"
 
+SCRIPT_DIR="$(dirname "$0")"
+
 # Convert PDF to PNGs if not already done
 if [ ! -f "$work_dir/pdf2png.done" ]; then
     echo "Converting PDF to PNGs..."
-    ./src/pdf2png "$1" "$work_dir/png" && touch "$work_dir/pdf2png.done"
+    "$SCRIPT_DIR/pdf2png" "$1" "$work_dir/png" && touch "$work_dir/pdf2png.done"
     echo "PDF conversion complete"
 else
     echo "Using existing PNG files..."
@@ -57,7 +59,7 @@ for png in "$work_dir/png"/*.png; do
     mkdir -p "$work_dir/md"
 
     start_time=$(date +%s)
-    ./node_modules/.bin/tsx src/png2md.ts "$png" > "$md_file"
+    npx tsx "$SCRIPT_DIR/png2md.ts" "$png" > "$md_file"
     end_time=$(date +%s)
 
     page_time=$((end_time - start_time))
