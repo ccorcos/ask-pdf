@@ -13,6 +13,7 @@
 #   Windows: https://ghostscript.com/releases/gsdnld.html
 
 
+
 # Check if required arguments are provided
 if [ $# -lt 2 ]; then
     echo "Usage: $0 <pdf_file> <output_dir>"
@@ -27,6 +28,9 @@ mkdir -p "$2"
 
 # Log output location
 echo "Converting PDF to PNG files in: $2"
+
+
+set -e
 
 # Convert PDF to PNG
 gs \
